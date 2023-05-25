@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\BinarySearchController;
+use App\Http\Controllers\LinearSearchController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -17,6 +18,9 @@ use Illuminate\Support\Facades\Route;
 Route::get('/', function () {
     return view('welcome');
 });
+
+Route::post('/linear-search', [LinearSearchController::class, 'performLinearSearch']);
+
 
 Route::get('/binary-search-test1', [BinarySearchController::class, 'testBinarySearchWithCollection']);
 Route::get('/binary-search-test', [BinarySearchController::class, 'testBinarySearchWithNames']);
