@@ -32,7 +32,4 @@ class LinearSearchController
 
         return view('linear-search-result', compact('result1', 'result2', 'time1', 'time2'));
     }
-
-
-
 }

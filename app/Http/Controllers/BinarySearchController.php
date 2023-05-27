@@ -38,7 +38,7 @@ class BinarySearchController extends Controller
         $high = $collection->count() - 1;
 
         while ($low <= $high) {
-            $mid = (int) (($low + $high) / 2);
+            $mid = (int)(($low + $high) / 2);
             $guess = $collection->get($mid);
 
             if ($guess === $item) {
@@ -77,7 +77,8 @@ class BinarySearchController extends Controller
 
         $item = 999; // The item you want to search for
 
-        $result = $this->binarySearchWithCollection($myList, $item);
+        $result = $this->binarySearchWithCollection($myList,
+            $item);
 
         if ($result !== null) {
             echo "Item found at index: " . $result;
@@ -89,7 +90,8 @@ class BinarySearchController extends Controller
     public function testBinarySearchWithNames()
     {
         // Retrieve the names from the "names" table and sort them
-        $names = DB::table('names')->pluck('name')->toArray();
+        $names = DB::table('names')->pluck('name')
+            ->toArray();
         sort($names);
 
         $item = 'Willis Borer'; // The name you want to search for
