@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\BinarySearchController;
+use App\Http\Controllers\BubbleSortController;
 use App\Http\Controllers\LinearSearchController;
 use App\Http\Controllers\SelectionSortController;
 use Illuminate\Support\Facades\Route;
@@ -24,7 +25,7 @@ Route::get('/', function () {
 
 Route::get('/your-route', function () {
     $testController = new TestController();
-    $testController->testBinarySearch();
+    $testController->testBubbleSort();
 //    var_dump($testController);
 });
 
@@ -34,5 +35,7 @@ Route::get('/binary-search-test1', [BinarySearchController::class, 'testBinarySe
 Route::get('/binary-search-test', [BinarySearchController::class, 'testBinarySearchWithNames']);
 
 Route::get('/selection-sort', [SelectionSortController::class, 'testSelectionSort']);
+
+Route::get('/bubble-sort', [BubbleSortController::class, 'testBubbleSort']);
 
 

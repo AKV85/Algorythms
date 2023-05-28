@@ -66,4 +66,52 @@ class TestController
             echo "not found";
         }
     }
+
+    public function selectionSort($array)
+    {
+        $length = count($array);
+        for ($i = 0; $i < $length - 1; $i++) {
+            $indexMin = $i;
+            for ($j = $i + 1; $j < $length; $j++) {
+                if ($array[$j] < $array[$indexMin]) {
+                    $indexMin = $j;
+                }
+            }
+            if ($indexMin !== $i) {
+                $temp = $array[$i];
+                $array[$i] = $array[$indexMin];
+                $array[$indexMin] = $temp;
+            }
+        }
+        return $array;
+    }
+
+    public function testSelectionSort()
+    {
+        $list = [2, 4, 1, 6, 3, 16, 0];
+        $result = $this->selectionSort($list);
+        echo implode(", ", $result);
+    }
+
+    public function bubbleSort($array)
+    {
+        $length = count($array);
+        for ($i = 0; $i <$length;$i++){
+            for($j=0;$j<$length-$i-1;$j++){
+                if($array[$j]>$array[$j+1]){
+                    $temp=$array[$j+1];
+                    $array[$j+1]=$array[$j];
+                    $array[$j]=$temp;
+                }
+            }
+        }
+        return $array;
+    }
+
+    public function testBubbleSort(){
+        $list=[56,45,1,78,345,12,46,34,3];
+        $sortedArray=$this->bubbleSort($list);
+        print_r($sortedArray);
+    }
+
 }
