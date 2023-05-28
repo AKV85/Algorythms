@@ -96,21 +96,52 @@ class TestController
     public function bubbleSort($array)
     {
         $length = count($array);
-        for ($i = 0; $i <$length;$i++){
-            for($j=0;$j<$length-$i-1;$j++){
-                if($array[$j]>$array[$j+1]){
-                    $temp=$array[$j+1];
-                    $array[$j+1]=$array[$j];
-                    $array[$j]=$temp;
+        for ($i = 0; $i < $length; $i++) {
+            for ($j = 0; $j < $length - $i - 1; $j++) {
+                if ($array[$j] > $array[$j + 1]) {
+                    $temp = $array[$j + 1];
+                    $array[$j + 1] = $array[$j];
+                    $array[$j] = $temp;
                 }
             }
         }
         return $array;
     }
 
-    public function testBubbleSort(){
-        $list=[56,45,1,78,345,12,46,34,3];
-        $sortedArray=$this->bubbleSort($list);
+    public function testBubbleSort()
+    {
+        $list = [56, 45, 1, 78, 345, 12, 46, 34, 3];
+        $sortedArray = $this->bubbleSort($list);
+        print_r($sortedArray);
+    }
+
+    public function quickSort($array)
+    {
+        $length = count($array);
+
+        if ($length <= 1) {
+            return $array;
+        }
+        $pivot = $array[0];
+        $left = [];
+        $right = [];
+        for ($i = 1; $i < $length; $i++) {
+            if ($pivot > $array[$i]) {
+                $left[] = $array[$i];
+            } else {
+                $right[] = $array[$i];
+            }
+        }
+        $left = $this->quickSort($left);
+        $right = $this->quickSort($right);
+
+        return array_merge($left, [$pivot], $right);
+    }
+
+    public function testQuickSort()
+    {
+        $list = [1,90, 12, 15, 3, 76, 34, 67, 44];
+        $sortedArray = $this->quickSort($list);
         print_r($sortedArray);
     }
 
