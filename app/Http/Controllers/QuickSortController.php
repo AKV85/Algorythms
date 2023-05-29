@@ -40,12 +40,18 @@ class QuickSortController
 
     public function testQuickSort()
     {
+        $iterationCount = 0;
         $list = [8, 90, 20, 12, 86, 57, 23, 4, 77];
-        $sortedArray = $this->quickSortPivotMid($list);
-        return view('quick-sort', ['list'=>$list,'sortedArray' => $sortedArray]);
+        $sortedArray = $this->quickSortPivotMid($list, $iterationCount);
+        return view('quick-sort', [
+            'list' => $list,
+            'sortedArray' => $sortedArray,
+            'iterationCount' => $iterationCount,
+        ]);
     }
 
-    function quickSortPivotMid($array) {
+    function quickSortPivotMid($array, &$iterationCount = 0)
+    {
         $length = count($array);
 
         // Базовый случай: если массив пустой или содержит только один элемент, он уже отсортирован
@@ -75,14 +81,13 @@ class QuickSortController
         }
 
         // Рекурсивно сортируем подмассивы
-        $left = $this->quickSortPivotMid($left);
-        $right = $this->quickSortPivotMid($right);
+        $left = $this->quickSortPivotMid($left, $iterationCount);
+        $right = $this->quickSortPivotMid($right, $iterationCount);
+        $iterationCount++;
 
         // Объединяем отсортированные подмассивы вместе с опорным элементом
         return array_merge($left, [$pivot], $right);
     }
-
-
 
 
 }

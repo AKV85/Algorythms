@@ -105,6 +105,42 @@ class BinarySearchController extends Controller
         }
     }
 
+    public function binarySearchRecursive($list, $item, $low = 0, $high = null)
+    {
+        if ($high === null) {
+            $high = count($list) - 1;
+        }
+
+        if ($low > $high) {
+            return null;
+        }
+
+        $mid = floor(($low + $high) / 2);
+        $guess = $list[$mid];
+
+        if ($guess == $item) {
+            return $mid;
+        }
+
+        if ($guess > $item) {
+            return $this->binarySearchRecursive($list, $item, $low, $mid - 1);
+        } else {
+            return $this->binarySearchRecursive($list, $item, $mid + 1, $high);
+        }
+    }
+        public function testBinarySearchRecursive()
+    {
+        $list = [2, 5, 8, 12, 16, 23, 38, 56, 72, 91];
+        $item = 23;
+        $index = $this->binarySearchRecursive($list, $item);
+
+        if ($index !== null) {
+            echo "Элемент найден на позиции: $index";
+        } else {
+            echo "Элемент не найден";
+        }
+    }
+
 }
 
 

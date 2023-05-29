@@ -7,5 +7,7 @@
 <h1>Quick Sort</h1>
 <p>Original Array: {{ implode(', ', $list) }}</p>
 <p>Sorted Array: {{ implode(', ', $sortedArray) }}</p>
+<p>Iteration count: {{ $iterationCount}}</p>
+
 </body>
 </html>

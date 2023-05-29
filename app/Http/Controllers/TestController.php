@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers;
 
+use SplQueue;
+
 class TestController
 {
     public function LinearSearch($array, $numb)
@@ -140,9 +142,63 @@ class TestController
 
     public function testQuickSort()
     {
-        $list = [1,90, 12, 15, 3, 76, 34, 67, 44];
+        $list = [1, 90, 12, 15, 3, 76, 34, 67, 44];
         $sortedArray = $this->quickSort($list);
         print_r($sortedArray);
+    }
+
+    public function breadthFirstSearch($graph, $firstPoint, $lastPoint)
+    {
+        if (!isset($graph[$firstPoint]) || !isset($graph[$lastPoint])) {
+            return false;
+        }
+        $queue = new SplQueue();
+        $visited = [];
+        $path = [];
+        $found = false;
+        $queue->enqueue($firstPoint);
+        $visited[$firstPoint] = true;
+
+        while (!$queue->isEmpty()) {
+            $currentPoint = $queue->dequeue();
+            if ($currentPoint === $lastPoint) {
+                $found = true;
+                break;
+            }
+            foreach ($graph[$currentPoint] as $neighbor) {
+                if (!isset($visited[$neighbor])) {
+                    $queue->enqueue($neighbor);
+                    $visited[$neighbor] = true;
+                    $path[$neighbor] = $currentPoint;
+                }
+            }
+        }
+        if (!$found) {
+            return false;
+        }
+        $shortestPath = [];
+        $currentPoint = $lastPoint;
+        while ($currentPoint !== $firstPoint) {
+            $shortestPath[] = $currentPoint;
+            $currentPoint = $path[$currentPoint];
+        }
+        $shortestPath[] = $firstPoint;
+        return array_reverse($shortestPath);
+    }
+
+    public function testShortestPath()
+    {
+        $list = [
+            'A' => ['B', 'C'],
+            'B' => ['A', 'D'],
+            'C' => ['A', 'D', 'E'],
+            'D' => ['B', 'C', 'E'],
+            'E' => ['C', 'D']
+        ];
+        $firstLetter='A';
+        $lastLetter='E';
+        $shortestPath=$this->breadthFirstSearch($list,$firstLetter,$lastLetter);
+        print_r($shortestPath);
     }
 
 }
