@@ -2,7 +2,9 @@
 
 namespace App\Http\Controllers;
 
+use SplPriorityQueue;
 use SplQueue;
+use function GuzzleHttp\Promise\queue;
 
 class TestController
 {
@@ -195,10 +197,77 @@ class TestController
             'D' => ['B', 'C', 'E'],
             'E' => ['C', 'D']
         ];
-        $firstLetter='A';
-        $lastLetter='E';
-        $shortestPath=$this->breadthFirstSearch($list,$firstLetter,$lastLetter);
+        $firstLetter = 'A';
+        $lastLetter = 'E';
+        $shortestPath = $this->breadthFirstSearch($list, $firstLetter, $lastLetter);
         print_r($shortestPath);
     }
 
+    public function dijkstra($graph, $firstPoint, $lastPoint)
+    {
+        if (!isset($graph[$firstPoint]) || !isset($graph[$lastPoint])) {
+            return null;
+        }
+        $visited = [];
+        $previous = [];
+        $distances = [];
+        $queue = new SplPriorityQueue();
+
+        foreach ($graph as $vertex => $edges) {
+            $distances[$vertex] = PHP_INT_MAX;
+            $previous[$vertex] = null;
+        }
+        $distances[$firstPoint] = 0;
+        $queue->insert($firstPoint, 0);
+
+        while (!$queue->isEmpty()) {
+            $currentPoint = $queue->extract();
+
+            if ($currentPoint === $lastPoint) {
+                break;
+            }
+            if (!isset($visited[$currentPoint])) {
+                $visited[$currentPoint] = true;
+
+                foreach ($graph[$currentPoint] as $neighbor=>$weight) {
+                    $totalDistance = $distances[$currentPoint] + $weight;
+
+                    if ($totalDistance < $distances[$neighbor]) {
+                        $distances[$neighbor] = $totalDistance;
+                        $previous[$neighbor] = $currentPoint;
+                        $queue->insert($neighbor, -$totalDistance);
+                    }
+                }
+            }
+        }
+        $path = [];
+        $currentPoint = $lastPoint;
+
+        while ($currentPoint !== null) {
+            $path[] = $currentPoint;
+            $currentPoint = $previous[$currentPoint];
+        }
+        $path = array_reverse($path);
+
+        return [
+            'path' => $path,
+            'distance' => $distances[$lastPoint]
+        ];
+    }
+
+    public function testDijkstra()
+    {
+        $graph = [
+            'A' => ['B' => 5, 'C' => 1],
+            'B' => ['A' => 5, 'D' => 1, 'E' => 2],
+            'C' => ['A' => 1, 'D' => 2],
+            'D' => ['B' => 1, 'C' => 2, 'E' => 4],
+            'E' => ['B' => 2, 'D' => 4]
+        ];
+
+        $firstVertex = 'A';
+        $lastVertex = 'E';
+        $minDistance = $this->dijkstra($graph, $firstVertex, $lastVertex);
+        print_r($minDistance);
+    }
 }
